@@ -29772,7 +29772,78 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"App.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"node_modules/react-dom/cjs/react-dom.development.js"}],"Icon.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.trash = exports.downVote = exports.upVote = exports.trashbin = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const trashbin = /*#__PURE__*/_react.default.createElement("svg", {
+  className: "w-6 h-6",
+  fill: "none",
+  stroke: "currentColor",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg"
+}, /*#__PURE__*/_react.default.createElement("path", {
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  strokeWidth: "2",
+  d: "M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+}));
+
+exports.trashbin = trashbin;
+
+const upVote = /*#__PURE__*/_react.default.createElement("svg", {
+  className: "w-6 h-6",
+  fill: "none",
+  stroke: "currentColor",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg"
+}, /*#__PURE__*/_react.default.createElement("path", {
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  strokeWidth: "2",
+  d: "M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+}));
+
+exports.upVote = upVote;
+
+const downVote = /*#__PURE__*/_react.default.createElement("svg", {
+  className: "w-6 h-6",
+  fill: "none",
+  stroke: "currentColor",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg"
+}, /*#__PURE__*/_react.default.createElement("path", {
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  strokeWidth: "2",
+  d: "M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"
+}));
+
+exports.downVote = downVote;
+
+const trash = /*#__PURE__*/_react.default.createElement("svg", {
+  className: "w-6 h-6",
+  fill: "none",
+  stroke: "currentColor",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg"
+}, /*#__PURE__*/_react.default.createElement("path", {
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  strokeWidth: "2",
+  d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+}));
+
+exports.trash = trash;
+},{"react":"node_modules/react/index.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29782,29 +29853,66 @@ exports.default = App;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _Icon = require("./Icon.js");
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function App() {
   const [topics, setTopics] = (0, _react.useState)([]);
+  const [vote, setVote] = (0, _react.useState)(topics.upvotes);
 
   const fetching = async () => {
     const response = await fetch("https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c70331ca4a16bb99/raw/6da767327041de13693181c2cb09459b0a3657a1/topics.json");
     const data = await response.json();
-    console.log(data);
     setTopics(data);
+  };
+
+  const increment = id => {
+    console.log("ID", id); // const data = e.target;
+
+    let findTopics = topics.find(topic => topic.id === id);
+
+    if (findTopics) {
+      setVote(++findTopics.upvotes);
+    }
+
+    console.log("dd", findTopics, topics);
   };
 
   (0, _react.useEffect)(() => {
     fetching();
   }, []);
-  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, topics.sort((a, b) => b.upvotes - b.downvotes - (a.upvotes - a.downvotes)).filter(topic => topic.discussedOn === "").map(topic => /*#__PURE__*/_react.default.createElement("div", {
-    key: topic.id,
-    className: "card"
-  }, /*#__PURE__*/_react.default.createElement("p", null, topic.title), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("button", null, "vote"), /*#__PURE__*/_react.default.createElement("span", null, " ", topic.upvotes, " "), /*#__PURE__*/_react.default.createElement("button", null, "Downvote"), /*#__PURE__*/_react.default.createElement("span", null, " ", topic.downvotes, " ")))));
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "New topics"), topics.sort((a, b) => b.upvotes - b.downvotes - (a.upvotes - a.downvotes)).filter(topic => topic.discussedOn === "").map(topic => /*#__PURE__*/_react.default.createElement("article", {
+    key: topic.id
+  }, /*#__PURE__*/_react.default.createElement("button", {
+    className: "archive",
+    id: topic.id
+  }, _Icon.trashbin), /*#__PURE__*/_react.default.createElement("h5", {
+    className: "topic-text"
+  }, topic.title), /*#__PURE__*/_react.default.createElement("div", {
+    className: "votes"
+  }, /*#__PURE__*/_react.default.createElement("button", {
+    className: "upvote",
+    id: "${topic.id}"
+  }, _Icon.upVote), /*#__PURE__*/_react.default.createElement("span", {
+    className: "upvote-number"
+  }, topic.upvotes), /*#__PURE__*/_react.default.createElement("button", {
+    className: "downvote",
+    id: "{topic.id}"
+  }, _Icon.downVote), /*#__PURE__*/_react.default.createElement("span", {
+    className: "downvote-number"
+  }, topic.downvotes))))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "Past Topics"), topics.filter(topic => topic.discussedOn !== "").map(topic => /*#__PURE__*/_react.default.createElement("article", {
+    key: topic.id
+  }, /*#__PURE__*/_react.default.createElement("button", {
+    className: "delete",
+    id: topic.id
+  }, _Icon.trashbin), /*#__PURE__*/_react.default.createElement("h5", {
+    className: "topic-text"
+  }, topic.title), /*#__PURE__*/_react.default.createElement("p", null, "Discussed on ", topic.discussedOn)))));
 }
-},{"react":"node_modules/react/index.js"}],"index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./Icon.js":"Icon.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -29844,7 +29952,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52499" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55885" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
