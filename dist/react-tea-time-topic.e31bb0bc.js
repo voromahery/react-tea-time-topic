@@ -29931,8 +29931,7 @@ function App() {
   const [topics, setTopics] = (0, _react.useState)([]);
   const [vote, setVote] = (0, _react.useState)(0);
   const [unvote, setUnvote] = (0, _react.useState)(0);
-  const [date, setDate] = (0, _react.useState)();
-  const [filterData, setFilterData] = (0, _react.useState)([]); /////////////////////////// FETCHING //////////////////////////////////////////////////////    
+  const [date, setDate] = (0, _react.useState)(); /////////////////////////// FETCHING //////////////////////////////////////////////////////    
 
   const fetching = async () => {
     const response = await fetch("https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c70331ca4a16bb99/raw/6da767327041de13693181c2cb09459b0a3657a1/topics.json");
@@ -29966,20 +29965,14 @@ function App() {
   const archiveTopic = e => {
     const id = e.target.id;
     const topicToArchive = topics.find(topic => topic.id == id);
-    let topic = {
-      upvotes: topicToArchive.upvotes,
-      downvotes: topicToArchive.downvotes,
-      disussedOn: new Date(Date.now()),
-      title: topicToArchive.title,
-      id: Date.now()
-    };
-    setDate(topics);
-    console.log(topic, id, topicToArchive); // setTopics(topics)
+    topicToArchive.discussedOn = Date.now();
+    console.log(id, topicToArchive.discussedOn);
+    setTopics([...topics]);
   }; ////////////////////////// DELETE //////////////////////////////
 
 
   const deleteHandleClick = e => {
-    const id = e.target.value;
+    const id = e.target.id;
     console.log("ID", id);
     const filterTopics = topics.filter(topic => topic.id != id);
     setTopics(filterTopics);
@@ -29992,14 +29985,14 @@ function App() {
     console.log(form);
     const createNewTopic = form.topic.value;
     let topic = {
+      id: Date.now(),
       upvotes: 0,
-      downvotes: 0,
-      disussedOn: "",
       title: createNewTopic,
-      id: Date.now()
+      downvotes: 0,
+      disussedOn: ""
     };
-    topics.push(topic); // console.log(newData, createNewTopic);
-
+    topics.push(topic);
+    console.log(topic, createNewTopic);
     setTopics([...topics]);
   };
 
@@ -30013,7 +30006,7 @@ function App() {
     placeholder: "Type your topic idea here"
   }), /*#__PURE__*/_react.default.createElement("button", {
     type: "submit"
-  }, "Submit")))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "New topics"), topics.sort((a, b) => b.upvotes - b.downvotes - (a.upvotes - a.downvotes)).filter(topic => topic.discussedOn == "").map(topic => /*#__PURE__*/_react.default.createElement(_NewTopics.default, {
+  }, "Submit")))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "New topics"), topics.sort((a, b) => b.upvotes - b.downvotes - (a.upvotes - a.downvotes)).filter(topic => topic.discussedOn === "").map(topic => /*#__PURE__*/_react.default.createElement(_NewTopics.default, {
     topic: topic,
     key: topic.id,
     vote: vote,
@@ -30024,7 +30017,7 @@ function App() {
     increment: increment,
     decrement: decrement,
     archiveTopic: archiveTopic
-  }))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "Past Topics"), topics.filter(topic => topic.discussedOn != "").map(topic => /*#__PURE__*/_react.default.createElement(_PastTopics.default, {
+  }))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "Past Topics"), topics.filter(topic => topic.discussedOn !== "").map(topic => /*#__PURE__*/_react.default.createElement(_PastTopics.default, {
     topic: topic,
     key: topic.id,
     trashbin: _Icon.trashbin,
@@ -30071,7 +30064,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56638" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63293" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
