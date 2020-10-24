@@ -8,7 +8,6 @@ export default function App() {
     const [topics, setTopics] = useState([]);
     const [vote, setVote] = useState(0);
     const [unvote, setUnvote] = useState(0);
-    const [date, setDate] = useState();
 
     /////////////////////////// FETCHING //////////////////////////////////////////////////////    
     const fetching = async () => {
@@ -68,7 +67,7 @@ export default function App() {
             upvotes: 0,
             title: createNewTopic,
             downvotes: 0,
-            disussedOn: "",
+            discussedOn: "",
         }
 
         topics.push(topic);

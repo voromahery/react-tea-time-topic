@@ -29894,6 +29894,8 @@ var _react = _interopRequireDefault(require("react"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function PastTopics(props) {
+  const discussedOnDate = new Date(Number(props.topic.discussedOn));
+  console.log(discussedOnDate);
   return /*#__PURE__*/_react.default.createElement("article", {
     key: props.topic.id
   }, /*#__PURE__*/_react.default.createElement("button", {
@@ -29903,7 +29905,7 @@ function PastTopics(props) {
     onClick: props.deleteHandleClick
   }, "Delete"), /*#__PURE__*/_react.default.createElement("h5", {
     className: "topic-text"
-  }, props.topic.title), /*#__PURE__*/_react.default.createElement("p", null, "Discussed on ", props.topic.discussedOn));
+  }, props.topic.title), /*#__PURE__*/_react.default.createElement("p", null, "Discussed on ", discussedOnDate.toLocaleDateString()));
 }
 },{"react":"node_modules/react/index.js"}],"App.js":[function(require,module,exports) {
 "use strict";
@@ -29930,8 +29932,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function App() {
   const [topics, setTopics] = (0, _react.useState)([]);
   const [vote, setVote] = (0, _react.useState)(0);
-  const [unvote, setUnvote] = (0, _react.useState)(0);
-  const [date, setDate] = (0, _react.useState)(); /////////////////////////// FETCHING //////////////////////////////////////////////////////    
+  const [unvote, setUnvote] = (0, _react.useState)(0); /////////////////////////// FETCHING //////////////////////////////////////////////////////    
 
   const fetching = async () => {
     const response = await fetch("https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c70331ca4a16bb99/raw/6da767327041de13693181c2cb09459b0a3657a1/topics.json");
@@ -29989,7 +29990,7 @@ function App() {
       upvotes: 0,
       title: createNewTopic,
       downvotes: 0,
-      disussedOn: ""
+      discussedOn: ""
     };
     topics.push(topic);
     console.log(topic, createNewTopic);
