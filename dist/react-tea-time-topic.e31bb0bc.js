@@ -29861,7 +29861,7 @@ function NewTopics(props) {
     id: props.topic.id,
     value: props.topic.id,
     onClick: props.archiveTopic
-  }, props.trashbin), /*#__PURE__*/_react.default.createElement("h5", {
+  }, "Archive"), /*#__PURE__*/_react.default.createElement("h5", {
     className: "topic-text"
   }, props.topic.title), /*#__PURE__*/_react.default.createElement("div", {
     className: "votes"
@@ -29870,14 +29870,14 @@ function NewTopics(props) {
     id: props.topic.id,
     value: props.topic.id,
     onClick: props.increment
-  }, props.upVote), /*#__PURE__*/_react.default.createElement("span", {
+  }, "Vote"), /*#__PURE__*/_react.default.createElement("span", {
     className: "upvote-number"
   }, props.topic.upvotes), /*#__PURE__*/_react.default.createElement("button", {
     className: "downvote",
     id: props.topic.id,
     value: props.topic.id,
     onClick: props.decrement
-  }, props.downVote), /*#__PURE__*/_react.default.createElement("span", {
+  }, "Unvote"), /*#__PURE__*/_react.default.createElement("span", {
     className: "downvote-number"
   }, props.topic.downvotes)));
 }
@@ -29901,7 +29901,7 @@ function PastTopics(props) {
     id: props.topic.id,
     value: props.topic.id,
     onClick: props.deleteHandleClick
-  }, props.trashbin), /*#__PURE__*/_react.default.createElement("h5", {
+  }, "Delete"), /*#__PURE__*/_react.default.createElement("h5", {
     className: "topic-text"
   }, props.topic.title), /*#__PURE__*/_react.default.createElement("p", null, "Discussed on ", props.topic.discussedOn));
 }
@@ -29931,8 +29931,8 @@ function App() {
   const [topics, setTopics] = (0, _react.useState)([]);
   const [vote, setVote] = (0, _react.useState)(0);
   const [unvote, setUnvote] = (0, _react.useState)(0);
-  const [date, setDate] = (0, _react.useState)([]);
-  const [filterData, setFilterData] = []; /////////////////////////// FETCHING //////////////////////////////////////////////////////    
+  const [date, setDate] = (0, _react.useState)();
+  const [filterData, setFilterData] = (0, _react.useState)([]); /////////////////////////// FETCHING //////////////////////////////////////////////////////    
 
   const fetching = async () => {
     const response = await fetch("https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c70331ca4a16bb99/raw/6da767327041de13693181c2cb09459b0a3657a1/topics.json");
@@ -29942,9 +29942,8 @@ function App() {
 
 
   const increment = e => {
-    const id = e.target.value;
-    console.log("ID", id);
-    const findTopics = topics.find(topic => topic.id === id);
+    const id = e.target.id;
+    const findTopics = topics.find(topic => topic.id == id);
 
     if (findTopics) {
       setVote(findTopics.upvotes++);
@@ -29952,9 +29951,8 @@ function App() {
   };
 
   const decrement = e => {
-    const id = e.target.value;
-    console.log("ID", id);
-    const findTopics = topics.find(topic => topic.id === id);
+    const id = e.target.id;
+    const findTopics = topics.find(topic => topic.id == id);
 
     if (findTopics) {
       setUnvote(findTopics.downvotes++);
@@ -29966,28 +29964,25 @@ function App() {
   }, []); /////////////////////// ARCHIVE //////////////////////////////////////////////////
 
   const archiveTopic = e => {
-    const id = e.target.value;
-    const topicToArchive = topics.find(topic => topic.id === id);
+    const id = e.target.id;
+    const topicToArchive = topics.find(topic => topic.id == id);
     let topic = {
       upvotes: topicToArchive.upvotes,
       downvotes: topicToArchive.downvotes,
-      disussedOn: Date.now(),
+      disussedOn: new Date(Date.now()),
       title: topicToArchive.title,
       id: Date.now()
     };
-    setDate(topic);
-    console.log(topic, id, topicToArchive);
-    setTopics(topics);
+    setDate(topics);
+    console.log(topic, id, topicToArchive); // setTopics(topics)
   }; ////////////////////////// DELETE //////////////////////////////
 
 
   const deleteHandleClick = e => {
     const id = e.target.value;
     console.log("ID", id);
-    const filterTopics = topics.filter(topic => topic.id !== id);
+    const filterTopics = topics.filter(topic => topic.id != id);
     setTopics(filterTopics);
-    console.log(filterTopics);
-    setFilterData(filterTopics);
   }; ////////////////////////////// ADD A NEW TOPIC /////////////////////////////////////
 
 
@@ -30029,7 +30024,7 @@ function App() {
     increment: increment,
     decrement: decrement,
     archiveTopic: archiveTopic
-  }))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "Past Topics"), topics.filter(topic => topic.discussedOn !== "").map(topic => /*#__PURE__*/_react.default.createElement(_PastTopics.default, {
+  }))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "Past Topics"), topics.filter(topic => topic.discussedOn != "").map(topic => /*#__PURE__*/_react.default.createElement(_PastTopics.default, {
     topic: topic,
     key: topic.id,
     trashbin: _Icon.trashbin,
