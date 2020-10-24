@@ -29859,7 +29859,8 @@ function NewTopics(props) {
   return /*#__PURE__*/_react.default.createElement("article", null, /*#__PURE__*/_react.default.createElement("button", {
     className: "archive",
     id: props.topic.id,
-    onClick: e => props.archiveTopic(e.target)
+    value: props.topic.id,
+    onClick: props.archiveTopic
   }, props.trashbin), /*#__PURE__*/_react.default.createElement("h5", {
     className: "topic-text"
   }, props.topic.title), /*#__PURE__*/_react.default.createElement("div", {
@@ -29897,7 +29898,9 @@ function PastTopics(props) {
     key: props.topic.id
   }, /*#__PURE__*/_react.default.createElement("button", {
     className: "delete",
-    id: props.topic.id
+    id: props.topic.id,
+    value: props.topic.id,
+    onClick: props.deleteHandleClick
   }, props.trashbin), /*#__PURE__*/_react.default.createElement("h5", {
     className: "topic-text"
   }, props.topic.title), /*#__PURE__*/_react.default.createElement("p", null, "Discussed on ", props.topic.discussedOn));
@@ -29928,12 +29931,15 @@ function App() {
   const [topics, setTopics] = (0, _react.useState)([]);
   const [vote, setVote] = (0, _react.useState)(0);
   const [unvote, setUnvote] = (0, _react.useState)(0);
+  const [date, setDate] = (0, _react.useState)([]);
+  const [filterData, setFilterData] = []; /////////////////////////// FETCHING //////////////////////////////////////////////////////    
 
   const fetching = async () => {
     const response = await fetch("https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c70331ca4a16bb99/raw/6da767327041de13693181c2cb09459b0a3657a1/topics.json");
     const data = await response.json();
     setTopics(data);
-  };
+  }; //////////////////////// VOTING ///////////////////////////////////////////////////////
+
 
   const increment = e => {
     const id = e.target.value;
@@ -29957,14 +29963,31 @@ function App() {
 
   (0, _react.useEffect)(() => {
     fetching();
-  }, []);
+  }, []); /////////////////////// ARCHIVE //////////////////////////////////////////////////
 
-  const archiveTopic = id => {
-    console.log(id);
-    const topicToArchive = topics.find(topic => topic.id === id); // topicToArchive.discussedOn = new Date();
-    // setDate(topicToArchive);
+  const archiveTopic = e => {
+    const id = e.target.value;
+    const topicToArchive = topics.find(topic => topic.id === id);
+    let topic = {
+      upvotes: topicToArchive.upvotes,
+      downvotes: topicToArchive.downvotes,
+      disussedOn: Date.now(),
+      title: topicToArchive.title,
+      id: Date.now()
+    };
+    setDate(topic);
+    console.log(topic, id, topicToArchive);
+    setTopics(topics);
+  }; ////////////////////////// DELETE //////////////////////////////
 
-    console.log(topicToArchive);
+
+  const deleteHandleClick = e => {
+    const id = e.target.value;
+    console.log("ID", id);
+    const filterTopics = topics.filter(topic => topic.id !== id);
+    setTopics(filterTopics);
+    console.log(filterTopics);
+    setFilterData(filterTopics);
   }; ////////////////////////////// ADD A NEW TOPIC /////////////////////////////////////
 
 
@@ -29982,7 +30005,7 @@ function App() {
     };
     topics.push(topic); // console.log(newData, createNewTopic);
 
-    setTopics([...topics, topic]);
+    setTopics([...topics]);
   };
 
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("h1", null, "Tea Time Topic"), /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h4", null, "Add a topic")), /*#__PURE__*/_react.default.createElement("article", null, /*#__PURE__*/_react.default.createElement("form", {
@@ -29999,6 +30022,7 @@ function App() {
     topic: topic,
     key: topic.id,
     vote: vote,
+    unvote: unvote,
     trashbin: _Icon.trashbin,
     upVote: _Icon.upVote,
     downVote: _Icon.downVote,
@@ -30008,7 +30032,8 @@ function App() {
   }))), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h3", null, "Past Topics"), topics.filter(topic => topic.discussedOn !== "").map(topic => /*#__PURE__*/_react.default.createElement(_PastTopics.default, {
     topic: topic,
     key: topic.id,
-    trashbin: _Icon.trashbin
+    trashbin: _Icon.trashbin,
+    deleteHandleClick: deleteHandleClick
   })))));
 }
 },{"react":"node_modules/react/index.js","./Icon.js":"Icon.js","./NewTopics.js":"NewTopics.js","./PastTopics.js":"PastTopics.js"}],"index.js":[function(require,module,exports) {

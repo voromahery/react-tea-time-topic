@@ -3,17 +3,21 @@ import { upVote, downVote, trashbin } from './Icon.js';
 import NewTopics from './NewTopics.js';
 import PastTopics from './PastTopics.js';
 
+
 export default function App() {
     const [topics, setTopics] = useState([]);
     const [vote, setVote] = useState(0);
     const [unvote, setUnvote] = useState(0);
+    const [date, setDate] = useState([]);
+    const [filterData, setFilterData] = ([]);
+/////////////////////////// FETCHING //////////////////////////////////////////////////////    
     const fetching = async () => {
         const response = await fetch("https://gist.githubusercontent.com/Pinois/93afbc4a061352a0c70331ca4a16bb99/raw/6da767327041de13693181c2cb09459b0a3657a1/topics.json");
         const data = await response.json();
         setTopics(data);
     }
 
-
+//////////////////////// VOTING ///////////////////////////////////////////////////////
     const increment = (e) => {
         const id = e.target.value;
         console.log("ID", id);
@@ -36,13 +40,33 @@ export default function App() {
         fetching();
     }, [])
 
-    const archiveTopic = (id) => {
-        console.log(id);
+/////////////////////// ARCHIVE //////////////////////////////////////////////////
+
+    const archiveTopic = (e) => {
+        const id = e.target.value;
         const topicToArchive = topics.find(topic => topic.id === id);
-        // topicToArchive.discussedOn = new Date();
-        // setDate(topicToArchive);
-        console.log(topicToArchive);
+        let topic = {
+            upvotes: topicToArchive.upvotes,
+            downvotes: topicToArchive.downvotes,
+            disussedOn: Date.now(),
+            title: topicToArchive.title,
+            id: Date.now(),
+        }
+
+        setDate(topic);
+        console.log(topic, id, topicToArchive);
+        setTopics(topics)
     }
+    ////////////////////////// DELETE //////////////////////////////
+
+    const deleteHandleClick = (e) => {
+        const id = e.target.value;
+        console.log("ID", id);
+        const filterTopics = topics.filter(topic => topic.id !== id);
+        setTopics(filterTopics);
+        console.log(filterTopics);
+        setFilterData(filterTopics);
+    } 
 
     ////////////////////////////// ADD A NEW TOPIC /////////////////////////////////////
     const AddNew = (e) => {
@@ -61,7 +85,7 @@ export default function App() {
 
         topics.push(topic);
         // console.log(newData, createNewTopic);
-        setTopics([...topics, topic]);
+        setTopics([...topics]);
     }
 
     return (
@@ -89,6 +113,7 @@ export default function App() {
                             topic={topic}
                             key={topic.id}
                             vote={vote}
+                            unvote={unvote}
                             trashbin={trashbin}
                             upVote={upVote}
                             downVote={downVote}
@@ -101,7 +126,7 @@ export default function App() {
                 <div>
                     <h3>Past Topics</h3>
                     {topics.filter(topic => topic.discussedOn !== "").map(topic => (
-                        <PastTopics topic={topic} key={topic.id} trashbin={trashbin} />
+                        <PastTopics topic={topic} key={topic.id} trashbin={trashbin} deleteHandleClick={deleteHandleClick}/>
                     ))}
                 </div>
             </main>

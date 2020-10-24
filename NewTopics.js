@@ -3,7 +3,7 @@ import React from 'react';
 export default function NewTopics(props) {
     return (
         <article>
-            <button className="archive" id={props.topic.id} onClick={(e) => props.archiveTopic(e.target)}>
+            <button className="archive" id={props.topic.id} value={props.topic.id} onClick={props.archiveTopic}>
                 {props.trashbin}
             </button>
             <h5 className="topic-text">{props.topic.title}</h5>
