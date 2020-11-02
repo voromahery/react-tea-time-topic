@@ -29946,6 +29946,7 @@ function PastTopics(props) {
     id: props.topic.id,
     xmlns: "http://www.w3.org/2000/svg"
   }, /*#__PURE__*/_react.default.createElement("path", {
+    id: props.topic.id,
     strokeLinecap: "round",
     strokeLinejoin: "round",
     strokeWidth: "2",

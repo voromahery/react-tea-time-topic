@@ -15,6 +15,7 @@ export default function PastTopics(props) {
                     xmlns="http://www.w3.org/2000/svg"
                 >
                     <path
+                        id={props.topic.id}
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
