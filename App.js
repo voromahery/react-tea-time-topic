@@ -43,7 +43,7 @@ export default function App() {
         const id = e.target.id;
         const topicToArchive = topics.find(topic => topic.id == id);
         topicToArchive.discussedOn = Date.now();
-        console.log( id, topicToArchive.discussedOn);
+        console.log(id, topicToArchive.discussedOn);
         setTopics([...topics])
     }
     ////////////////////////// DELETE //////////////////////////////
@@ -69,6 +69,8 @@ export default function App() {
             downvotes: 0,
             discussedOn: "",
         }
+
+        form.reset();
 
         topics.push(topic);
 
