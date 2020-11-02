@@ -30041,9 +30041,8 @@ function App() {
       discussedOn: ""
     };
     form.reset();
-    topics.push(topic);
     console.log(topic, createNewTopic);
-    setTopics([...topics]);
+    setTopics([...topics, topic]);
   };
 
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("h1", null, "Tea Time Topic"), /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement("header", null, /*#__PURE__*/_react.default.createElement("h4", null, "Add a topic")), /*#__PURE__*/_react.default.createElement("article", null, /*#__PURE__*/_react.default.createElement("form", {
@@ -30114,7 +30113,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57446" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57626" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

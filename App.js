@@ -72,10 +72,8 @@ export default function App() {
 
         form.reset();
 
-        topics.push(topic);
-
         console.log(topic, createNewTopic);
-        setTopics([...topics]);
+        setTopics([...topics, topic]);
     }
 
     return (
